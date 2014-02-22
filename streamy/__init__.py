@@ -3,6 +3,12 @@
 def run(host, port):
     import server.config as config
     from flask import Flask
+    from geventwebsocket.handler import WebSocketHandler
+    from gevent.pywsgi import WSGIServer
 
-    config.app.run(host=host, port=port, debug=True, use_reloader=False)
+    http_server = WSGIServer(
+        (host, port), config.app, handler_class=WebSocketHandler
+    )
+
+    http_server.serve_forever()
 
