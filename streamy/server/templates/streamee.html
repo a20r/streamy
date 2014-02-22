@@ -46,7 +46,7 @@
         </script>
         <script text="text/javascript">
             window.onload = function () {
-                var webSocket = new WebSocket("ws://10.2.1.192:8888/streamee/{{ stream_id }}");
+                var webSocket = new WebSocket("ws://" + document.location.hostname + ":8888/streamee/{{ stream_id }}");
                 console.log("HERE");
                 webSocket.onmessage = function (e) {
                     image = document.getElementById("stream");

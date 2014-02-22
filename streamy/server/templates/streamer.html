@@ -58,7 +58,7 @@
                 var width = 100;
                 var height = 50;
                 var cGaze = new camgaze.Camgaze(width, height, "mainCanvas");
-                var webSocket = new WebSocket("ws://10.2.1.192:8889/streamer/{{ stream_id }}");
+                var webSocket = new WebSocket("ws://" + document.location.hostname + ":8889/streamer/{{ stream_id }}");
                 var canSend = true;
                 webSocket.onmessage = function (e) {
                     canSend = true;
