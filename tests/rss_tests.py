@@ -16,7 +16,7 @@ class UnitTests(unittest.TestCase):
         self.rss = RSSReader(self.db)
 
     def test_parse_feed(self):
-        result = self.rss.parse_feed("bbc_news")
+        result = self.rss.parse_feed("bbc")
 
         self.assertTrue(len(result) > 0)
         self.assertTrue(result[0]["title"] is not None)
@@ -24,13 +24,20 @@ class UnitTests(unittest.TestCase):
         self.assertTrue(result[0]["date"] is not None)
 
     def test_record_feed(self):
-        self.rss.record_feed("bbc_news")
+        self.rss.record_feed()
 
-        bbc_news = self.rss.collections["bbc_news"]
-        self.assertTrue(bbc_news.count() > 0)
+        # test simple insert
+        rss = self.rss.collections["rss"]
+        count = rss.count()
+        self.assertTrue(rss.count() > 0)
 
-        bbc_news.remove()
-        self.assertTrue(bbc_news.count() == 0)
+        # test no duplicates
+        self.rss.record_feed()
+        self.assertEquals(count, rss.count())
+
+        # test remove all documents
+        rss.remove()
+        self.assertTrue(rss.count() == 0)
 
 
 if __name__ == "__main__":
