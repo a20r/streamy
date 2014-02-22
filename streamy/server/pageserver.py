@@ -11,7 +11,7 @@ STATIC_DIR = "assets/"
 MIME_DICT = {
     "js": "text/javascript",
     "css": "text/css",
-    "img": "image/png",
+    "imgs": "image/png",
     "libraries": "text/javascript",
     "data": "text/csv"
 }
