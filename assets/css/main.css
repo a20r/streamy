@@ -1,5 +1,5 @@
 div.jumbotron {
-	background-color: #0084b4;
+	background-color: #3B5998;
 }
 
 p {
@@ -29,5 +29,15 @@ div.my-container {
 
 a.my-header-button {
 	width: 100%;
+}
+
+div.vid-sidebar {
+	background-color: #3B5998;
+}
+
+div.stream-description {
+	padding-left: 25px;
+	padding-right: 25px;
+	padding-bottom: 25px;
 }
 
