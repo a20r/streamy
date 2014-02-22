@@ -28,3 +28,13 @@ class DB(object):
         }
 
         return collections
+
+
+if __name__ == "__main__":
+    db = DB()
+    db.connect()
+    collections = db.return_collections()
+
+    tweets = collections["tweets"]
+    tweet.add()
+

@@ -1,7 +1,9 @@
+#!/usr/bin/env python
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
 import json
+from ..db import DB
 
 # Go to http://dev.twitter.com and create an app.
 # The consumer key and secret will be generated for you after
@@ -18,9 +20,12 @@ class TwitterStream(StreamListener):
     This is a basic listener that just prints received tweets to stdout.
 
     """
+
+    tweets = None 
+    
     def on_data(self, data):
         #print json.loads(data)['text']
-        print data
+        self.insert_tweet(data)
         return True
 
     def on_error(self, status):
@@ -34,6 +39,12 @@ class TwitterStream(StreamListener):
         stream = Stream(auth, self)
         stream.filter(locations=kwargs["locations"])
 
+        self.db = kwargs["db"] # assumes db is already connected
+        if self.db.state == "IDLE" or self.db.state == "DISCONNECTED":
+            self.db.connect()
 
-if __name__ == '__main__':
-    s = TwitterStream(locations=[-0.0299759,51.5019442,-0.0122416,51.5087498])
+        collections = db.return_collections()
+        self.tweets = collections["tweets"]
+        
+    def insert_tweet(self, tweet):
+        self.tweets.insert(tweet)
