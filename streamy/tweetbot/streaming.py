@@ -19,32 +19,27 @@ class TwitterStream(StreamListener):
     """ A listener handles tweets are the received from the stream.
     This is a basic listener that just prints received tweets to stdout.
 
-    """
+    """    
+    def __init__(self, **kwargs):
+        self.db = kwargs["db"] # assumes db is already connected
+        if self.db.state == "IDLE" or self.db.state == "DISCONNECTED":
+            self.db.connect()
+        collections = self.db.return_collections()
+        print self.db.state
+        print collections
+        self.tweets = collections["tweets"]
+        auth = OAuthHandler(consumer_key, consumer_secret)
+        auth.set_access_token(access_token, access_token_secret)
+        stream = Stream(auth, self)
+        stream.filter(locations=kwargs["locations"])
 
-    tweets = None 
-    
     def on_data(self, data):
-        #print json.loads(data)['text']
-        self.insert_tweet(data)
+        print data
+        self.insert_tweet(json.loads(data))
         return True
 
     def on_error(self, status):
         print status
-
-    def __init__(self, **kwargs):
-        #l = TwitterStream()
-        auth = OAuthHandler(consumer_key, consumer_secret)
-        auth.set_access_token(access_token, access_token_secret)
-
-        stream = Stream(auth, self)
-        stream.filter(locations=kwargs["locations"])
-
-        self.db = kwargs["db"] # assumes db is already connected
-        if self.db.state == "IDLE" or self.db.state == "DISCONNECTED":
-            self.db.connect()
-
-        collections = db.return_collections()
-        self.tweets = collections["tweets"]
         
     def insert_tweet(self, tweet):
         self.tweets.insert(tweet)

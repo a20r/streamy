@@ -23,4 +23,4 @@ if __name__ == '__main__':
 
     #tweets = collections["tweets"]
     #tweet.add()
-    s = TwitterStream(locations=[-0.0299759,51.5019442,-0.0122416,51.5087498])
+    s = TwitterStream(locations=[-0.0299759,51.5019442,-0.0122416,51.5087498], db=db)
