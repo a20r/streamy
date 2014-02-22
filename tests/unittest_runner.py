@@ -5,7 +5,6 @@ import sys
 import shutil
 import subprocess
 
-
 # SETTINGS
 keep_unittest_logs = False
 unittests_bin_dir = "tests"
