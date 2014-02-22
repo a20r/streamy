@@ -1,5 +1,6 @@
 div.jumbotron {
-	background-color: #3B5998;
+	background-color: #12A3C9;
+	box-shadow: 0px 3px 10px #CCCCCC;
 }
 
 p {
@@ -24,7 +25,8 @@ div.vidthumb {
 }
 
 div.my-container {
-	padding-top: 25px;
+	padding-top: 15px;
+	background-color: #FFFFFF;
 }
 
 a.my-header-button {
