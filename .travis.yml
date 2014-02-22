@@ -1,0 +1,18 @@
+language: python
+
+python:
+    - "2.7"
+
+script:
+    python tests/unittest_runner.py
+
+branches:
+  only:
+      - master
+
+notifications:
+  recipients:
+    - chutsu@gmail.com
+  email:
+    on_success: change
+    on_failure: always
