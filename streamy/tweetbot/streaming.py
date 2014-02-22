@@ -1,6 +1,13 @@
+#!/usr/bin/env python
+import json
+
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
-from tweepy import Stream
+from tweepy import Stream, API
+
+from streamy.analyzer.sentiment import SentimentAnalyzer
+
+
 
 # Go to http://dev.twitter.com and create an app.
 # The consumer key and secret will be generated for you after
@@ -12,22 +19,56 @@ consumer_secret="SbeMeY8c0o7Cg3D8UqNMqIApl1ldQX0kz1nuz0ghh8"
 access_token="26055337-Bs5RZJYHQRZ5dbGIOZk4SYV1lw8nHQG5YEUodowFT"
 access_token_secret="J0AhNitT95NiVkOwJAFUHqKLDAUmZrSAzhI0VQfoOqHlo"
 
-class StdOutListener(StreamListener):
+class TwitterStream(StreamListener):
     """ A listener handles tweets are the received from the stream.
     This is a basic listener that just prints received tweets to stdout.
 
     """
+    locations = ""
+
+    def __init__(self, **kwargs):
+
+        #reply = TweetReply()
+        #reply.tweet_with_request("Alehins")
+
+        # database
+        self.db = kwargs["db"] # assumes db is already connected
+        if self.db.state == "IDLE" or self.db.state == "DISCONNECTED":
+            self.db.connect()
+        collections = self.db.return_collections()
+        self.tweets = collections["tweets"]
+
+        # twitter
+        auth = OAuthHandler(consumer_key, consumer_secret)
+        auth.set_access_token(access_token, access_token_secret)
+        stream = Stream(auth, self)
+        stream.filter(locations=kwargs["locations"])
+        self.locations=kwargs["locations"]
+
+        # misc
+        self.sentiment = SentimentAnalyzer()
+
     def on_data(self, data):
         print data
+        tweet_data = json.loads(data)
+        tweet_data["requested_for_locations"] = self.locations
+        #tweet_data["requested_for_locations"]
+        self.insert_tweet(tweet_data)
+
         return True
 
     def on_error(self, status):
         print status
 
-if __name__ == '__main__':
-    l = StdOutListener()
-    auth = OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
+    def insert_tweet(self, tweet):
+        self.tweets.insert(tweet)
 
-    stream = Stream(auth, l)
-    stream.filter(locations=[-0.0299759,51.5019442,-0.0122416,51.5087498])
+class TweetReply():
+    def __init__(self):
+        auth = OAuthHandler(consumer_key, consumer_secret)
+        auth.set_access_token(access_token, access_token_secret)
+        self.api = API(auth)
+
+    def tweet_with_request(self, screen_name, tweet_id, url):
+        self.api.update_status("@" + screen_name + " Hi! Could you please click the link to stream your surroundings? " + url, tweet_id)
+        print hi

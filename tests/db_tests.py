@@ -13,8 +13,6 @@ class UnitTests(unittest.TestCase):
 
     def test_connect(self):
         self.db.connect()
-
-    def test_disconnect(self):
         self.db.disconnect()
 
     def db_return_collection(self):
@@ -22,3 +20,8 @@ class UnitTests(unittest.TestCase):
 
         self.assertTrue(collections is not None)
         self.assertTrue(collections["tweets"] is not None)
+        self.assertTrue(collections["rss"] is not None)
+
+
+if __name__ == "__main__":
+    unittest.main()
