@@ -1,40 +1,34 @@
 #!/usr/bin/env python
 import pymongo
 
-# GLOBAL VARS
-host = "localhost"
-port = "27017"
-
 
 class DB(object):
     def __init__(self, **kwargs):
         self.host = kwargs.get("host", "localhost")
         self.port = kwargs.get("port", "27017")
+        self.state = "IDLE"
+        self.client = None
 
     def connect(self):
-        self.client = pymongo.MongoClient(
-            'mongodb://{0}:{1}/'.format(host, port)
-        )
+        db_url = 'mongodb://{0}:{1}/'.format(self.host, self.port)
+        self.client = pymongo.MongoClient(db_url)
+        self.state = "CONNECTED"
 
     def disconnect(self):
-        self.client.disconnect()
+        if self.state == "CONNECTED":
+            self.client.disconnect()
+            self.state = "DISCONNECTED"
 
     def return_collections(self):
-        collections = {}
+        if self.state == "IDLE" or self.state == "DISCONNECTED":
+            raise RuntimeError("Not connected to database!")
 
-        db = self.client.streamy
-        collections = {
-            "tweets": db.tweets
-        }
+        else:
+            collections = {}
 
-        return collections
-
-
-if __name__ == "__main__":
-    db = DB()
-    db.connect()
-    collections = db.return_collections()
-
-    tweets = collections["tweets"]
-    tweet.add()
-
+            db = self.client.streamy
+            collections = {
+                "tweets": db.tweets,
+                "bbc_news": db.bbc_news
+            }
+            return collections
