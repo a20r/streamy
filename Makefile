@@ -1,3 +1,4 @@
 
-all : *.py
+all: *.py
 	@python run.py
+
