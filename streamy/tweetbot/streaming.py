@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
-from tweepy import Stream
+from tweepy import Stream, API
 import json
 from ..db import DB
 
@@ -20,7 +20,13 @@ class TwitterStream(StreamListener):
     This is a basic listener that just prints received tweets to stdout.
 
     """    
+    locations = ""
+
     def __init__(self, **kwargs):
+
+        #reply = TweetReply()
+        #reply.tweet_with_request("Alehins")
+
         self.db = kwargs["db"] # assumes db is already connected
         if self.db.state == "IDLE" or self.db.state == "DISCONNECTED":
             self.db.connect()
@@ -32,10 +38,14 @@ class TwitterStream(StreamListener):
         auth.set_access_token(access_token, access_token_secret)
         stream = Stream(auth, self)
         stream.filter(locations=kwargs["locations"])
+        self.locations=kwargs["locations"]
 
     def on_data(self, data):
         print data
-        self.insert_tweet(json.loads(data))
+        tweet_data = json.loads(data)
+        tweet_data["requested_for_locations"] = self.locations
+        #tweet_data["requested_for_locations"]
+        self.insert_tweet(tweet_data)
         return True
 
     def on_error(self, status):
@@ -43,3 +53,13 @@ class TwitterStream(StreamListener):
         
     def insert_tweet(self, tweet):
         self.tweets.insert(tweet)
+
+class TweetReply():
+    def __init__(self):
+        auth = OAuthHandler(consumer_key, consumer_secret)
+        auth.set_access_token(access_token, access_token_secret)
+        self.api = API(auth)  
+
+    def tweet_with_request(self, screen_name, tweet_id, url):
+        self.api.update_status("@" + screen_name + " Hi! Could you please click the link to stream your surroundings? " + url, tweet_id)
+        print hi
