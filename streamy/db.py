@@ -29,6 +29,8 @@ class DB(object):
             db = self.client.streamy
             collections = {
                 "tweets": db.tweets,
-                "bbc_news": db.bbc_news
+                "rss": db.rss,
+                "result": db.result
             }
+
             return collections

@@ -20,7 +20,7 @@ class UnitTests(unittest.TestCase):
 
         self.assertTrue(collections is not None)
         self.assertTrue(collections["tweets"] is not None)
-        self.assertTrue(collections["bbc_news"] is not None)
+        self.assertTrue(collections["rss"] is not None)
 
 
 if __name__ == "__main__":
