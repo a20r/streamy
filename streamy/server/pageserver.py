@@ -65,6 +65,15 @@ def get_streamer_list():
     return render_template("streamerlist.html", streamer_list=streamer_list)
 
 
+@config.app.route("/make_anon/<s_id>")
+def get_make_anon(s_id):
+    global streamer_list
+    if not s_id in streamer_list:
+        streamer_list.append(s_id)
+
+    return jsonify(error="No error")
+
+
 @config.app.route("/")
 def get_index():
     return render_template("landing.html")
