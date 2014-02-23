@@ -158,11 +158,19 @@
 
 
                 <div id="map-canvas"></div>
-                <ul id="rss_feeds">
+                <ul id="rss_feeds" class="list-group">
                     {% for feed in rss %}
-                    <li>
+                    
+                    {% if feed.sentiment > 0 %}
+                        <li class="list-group-item ist-group-item-success">
+                    {% elif feed.sentiment < 0 %}
+                        <li class="list-group-item ist-group-item-danger">
+                    {% else %}
+                        <li class="list-group-item">
+                    {% endif %}
+
                         <a href="{{ feed.source_link }}">
-                            [{{ feed.source }}] - {{ feed.title }}           
+                            [{{ feed.source }}] – {{ feed.title }}           
                         </a>
                     </li>
                     {% endfor %}
