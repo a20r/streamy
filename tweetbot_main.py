@@ -28,13 +28,12 @@ def get_boundary(address):
 if __name__ == '__main__':
     db = DB()
     db.connect()
-    #collections = db.return_collections()
-    #tweets = collections["tweets"]
-    #tweet.add()
+
     #[-0.0299759,51.5019442,-0.0122416,51.5087498]
-    # query = "Maidan, Kiev"
-    # print get_boundary(query)
-    # s = TwitterStream(locations=get_boundary(query), db=db)
+    query = "Keiv, Ukrain"
+    print get_boundary(query)
+    s = TwitterStream(locations=get_boundary(query), db=db)
+
 
     # reply = TweetReply()
 

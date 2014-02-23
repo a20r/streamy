@@ -51,13 +51,11 @@ class TwitterStream(StreamListener):
         stream.filter(locations=kwargs["locations"])
 
     def on_data(self, data):
-        import pprint
         tweet_data = json.loads(data)
-        pprint.pprint(tweet_data["user"]["name"])
         tweet_data["requested_for_locations"] = self.locations
         #tweet_data["requested_for_locations"]
 
-        if self.counter < 5:
+        if self.counter < 100:
             print self.counter
             self.insert_tweet(tweet_data)
             self.queue.append(tweet_data)
@@ -67,7 +65,8 @@ class TwitterStream(StreamListener):
             return False
 
     def on_error(self, status):
-        print status
+        # print status
+        print
 
     def insert_tweet(self, tweet):
         self.tweets.insert(tweet)
