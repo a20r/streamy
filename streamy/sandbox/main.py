@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-import json
+import re
 
 from flask import Flask
 from flask import g
 from flask import request
-from flask import jsonify
 from flask import render_template
 from flask_sockets import Sockets
 
@@ -76,8 +75,8 @@ def query():
         rss.find(
             {
                 "$or": [
-                    {"title": {"$regex": search_term}},
-                    {"summary": {"$regex": search_term}}
+                    {"title": re.compile(search_term, re.IGNORECASE)},
+                    {"summary": re.compile(search_term, re.IGNORECASE)},
                 ]
             }
         ).sort("date")
