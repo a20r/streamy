@@ -6,7 +6,7 @@ import config
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-from streaming.tweetbot.TweetReply as TweetReply
+from streaming.tweetbot import TweetReply
 
 """ Directory for static files """
 STATIC_DIR = "assets/"
