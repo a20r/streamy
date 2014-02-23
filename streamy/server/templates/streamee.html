@@ -1,0 +1,59 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Camgaze.js</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <style type="text/css">
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+
+            .container-narrow {
+                margin: 0 auto;
+                max-width: 700px;
+            }
+
+            div#badge {
+                width: 141px;
+                height: 141px;
+                position: fixed;
+                top: 0;
+                right: 0;
+            }
+        </style>
+        <!-- Le Bootstrap styles -->
+        <link
+        href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+        rel="stylesheet">
+
+    </head>
+    <body>
+        <div id="s_id" style="display: none;">{ stream_id }</div>
+        <div class="container-narrow">
+            <div class="hero-unit">
+                <h2 style="padding-bottom:10;">Face Detection Demo</h2>
+                    <!-- <canvas id="mainCanvas" height="440" width="580"></canvas> -->
+                    <img id="stream"></img>
+            </div>
+
+        </div>
+        <!-- JQuery and Bootstrap Javascript files -->
+        <script
+            src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+        </script>
+        <script text="text/javascript">
+            window.onload = function () {
+                var webSocket = new WebSocket("ws://" + document.location.hostname + ":8888/streamee/{{ stream_id }}");
+                console.log("HERE");
+                webSocket.onmessage = function (e) {
+                    image = document.getElementById("stream");
+                    console.log(e);
+                    image.setAttribute("src", e.data);
+                }
+            }
+        </script>
+    </body>
+</html>

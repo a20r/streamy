@@ -1,5 +1,6 @@
 flask
-autobahn
+tornado
+gevent
 pymongo
 tweepy
 geopy
