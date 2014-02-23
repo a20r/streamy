@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import feedparser
 
+from streamy.analyzer.sentiment import SentimentAnalyzer
+
 
 class RSSReader(object):
     def __init__(self, db):
@@ -10,12 +12,17 @@ class RSSReader(object):
             "cnn": "http://rss.cnn.com/rss/edition.rss",
             "fox": "http://feeds.foxnews.com/foxnews/latest",
             "nytimes": "http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+            "google": "https://news.google.com/?output=rss",
+            "guardian": "http://feeds.theguardian.com/theguardian/world/rss",
+            "wall_street_journal": "http://online.wsj.com/xml/rss/3_7085.xml",
+            "usa_today": "http://rssfeeds.usatoday.com/usatoday-NewsTopStories"
         }
 
         if self.db.state != "CONNECTED":
             raise RuntimeError("Not connected to database!")
 
         self.collections = self.db.return_collections()
+        self.sentiment = SentimentAnalyzer()
 
     def strip_html(self, data):
         tag = False
@@ -61,4 +68,6 @@ class RSSReader(object):
         for target in self.targets:
             for entry in self.parse_feed(target):
                 if not self.collections["rss"].find_one(entry):
+                    sentiment = self.sentiment.analyze_text(entry["summary"])
+                    entry["sentiment"] = sentiment
                     self.collections["rss"].insert(entry)

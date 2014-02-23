@@ -1,4 +1,7 @@
 flask
-autobahn
+tornado
+gevent
 pymongo
-nltk
+tweepy
+geopy
+pattern

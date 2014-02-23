@@ -27,6 +27,17 @@ class UnitTests(unittest.TestCase):
     def test_word_cloud(self):
         tags = self.aggregator.word_cloud()
 
+        print "TAGS:"
+
+        for tag in tags[0:20]:
+            print tag["tag"], tag["count"]
+
+
+
+
+
+        print "LEN:", len(tags)
+
         self.assertTrue(tags is not None)
         self.assertTrue(len(tags) > 0)
 

@@ -19,10 +19,21 @@ MIME_DICT = {
 @config.app.route("/<filename>", methods = ["GET"])
 def serve_html_page(filename):
     if filename == "favicon.ico":
-        with open(STATIC_DIR + "img/favicon.ico") as f:
+        with open(STATIC_DIR + "imgs/favicon.ico") as f:
             return Response(f.read(), mimetype = "image/x-icon")
 
     return render_template(filename)
+
+
+@config.app.route("/streamer/<stream_id>")
+def get_streamer(stream_id):
+    return render_template("streamer.html", stream_id=stream_id)
+
+
+@config.app.route("/streamee/<stream_id>")
+def get_streamee(stream_id):
+    return render_template("streamee.html", stream_id=stream_id)
+
 
 @config.app.route("/<filetype>/<filename>", methods = ["GET"])
 def serve_script(filetype, filename):

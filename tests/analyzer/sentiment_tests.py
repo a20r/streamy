@@ -20,8 +20,8 @@ class UnitTests(unittest.TestCase):
         result_1 = self.sentiment.analyze_text("great")
         result_2 = self.sentiment.analyze_text("bad")
 
-        self.assertEquals(result_1["label"], "pos")
-        self.assertEquals(result_2["label"], "neg")
+        self.assertTrue(result_1["polarity"] > 0)
+        self.assertTrue(result_2["polarity"] < 0)
 
 
 if __name__ == "__main__":

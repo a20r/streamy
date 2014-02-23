@@ -3,6 +3,11 @@
 def run(host, port):
     import server.config as config
     from flask import Flask
+    from gevent.pywsgi import WSGIServer
 
-    config.app.run(host=host, port=port, debug=True, use_reloader=False)
+    http_server = WSGIServer(
+        (host, port), config.app
+    )
+
+    http_server.serve_forever()
 
