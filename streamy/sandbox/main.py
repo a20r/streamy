@@ -50,14 +50,6 @@ def modify_source_names(feeds):
     return feeds
 
 
-def jsonify_tweets(tweets):
-    result = []
-    for tweet in tweets:
-        tweet.pop("_id")
-        result.append(json.dumps(tweet))
-    return result
-
-
 @app.route('/', methods=["GET"])
 def index():
     return render_template(

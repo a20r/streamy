@@ -1,10 +1,11 @@
-
+#!/usr/bin/env python
+import re
+import json
+import config
 
 from flask import request, redirect, url_for, abort, jsonify, render_template
 from flask import make_response, Response
-import config
 from flask import g
-import re
 
 from db import DB
 
@@ -82,6 +83,7 @@ def get_make_anon(s_id):
 def get_index():
     return render_template("landing.html")
 
+
 def get_db():
     if not hasattr(g, "db"):
         g.db = DB()
@@ -117,13 +119,9 @@ def modify_source_names(feeds):
 
 @config.app.route('/map', methods=["GET"])
 def map():
-    geo_points = [
-        (56.341304, -2.791441),  # Gannochy Hall
-        (55.953252, -3.188267)  # Edinburgh
-    ]
     return render_template(
         'map.html',
-        geo_points=geo_points,
+        search_term="",
         rss=list()
     )
 
@@ -134,11 +132,13 @@ def query():
     collections = db.return_collections()
     rss = collections["rss"]
 
+    # get search term
     search_term = None
     if request.form["search_term"] is not None:
         search_term = request.form["search_term"]
 
-    results = list(
+    # find relevant rss feeds
+    rss_results = list(
         rss.find(
             {
                 "$or": [
@@ -146,15 +146,51 @@ def query():
                     {"summary": re.compile(search_term, re.IGNORECASE)},
                 ]
             }
-        ).sort("date")
+        ).sort("date", -1)
     )
-    results = modify_source_names(results)
+    rss_results = modify_source_names(rss_results)
 
     return render_template(
         'map.html',
-        geo_points=[],
-        rss=results
+        search_term=search_term,
+        rss=rss_results
     )
+
+
+@config.app.route('/tweets', methods=["POST"])
+def tweets():
+    db = get_db()
+    collections = db.return_collections()
+    tweets = collections["tweets"]
+    tweet_results = []
+
+    if request.data is not None:
+        search_term = json.loads(request.data)["search_term"]
+        print search_term
+
+        # find relevant tweets
+        if search_term != "":
+            tweet_results = list(
+                tweets.find(
+                    {
+                        "$or": [
+                            {"text": re.compile(search_term, re.IGNORECASE)},
+                            {"summary": re.compile(search_term, re.IGNORECASE)},
+                            {
+                                "entities": {
+                                    "$elemMatch": {
+                                        "text": re.compile(search_term, re.IGNORECASE)
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ).sort("created_at", -1)
+            )
+            for tweet in tweet_results:
+                tweet.pop("_id")
+
+        return jsonify({"tweets": tweet_results})
 
 if __name__ == "__main__":
     app.run(debug=True)
