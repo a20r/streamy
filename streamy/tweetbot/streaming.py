@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import json
 
+import random
+
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream, API
@@ -84,7 +86,7 @@ class TweetReply():
 
     def tweet_to_person(self, screen_name):
         # self.api.update_status("@" + screen_name + " Hi! Could you please click the link to stream your surroundings? " + url, tweet_id)
-        self.api.update_status("@" + screen_name + " Somebody requested a live stream from you: http://streamy.co/streamer/" + screen_name)
+        self.api.update_status("@" + screen_name + " Somebody requested a live stream from you: http://streamy.co/streamer/" + screen_name + " " + unicode(random.random()))
 
 
 class TwitterTrends(object):
