@@ -23,7 +23,7 @@
         var map_bounds = new google.maps.LatLngBounds();
 
         function initialize() {
-            var mapOptions = {
+            map_options = {
                 zoom: 3,
                 center: new google.maps.LatLng(60, 105),
                 mapTypeId: google.maps.MapTypeId.TERRAIN
@@ -31,7 +31,7 @@
 
             map = new google.maps.Map(
                 document.getElementById('map-canvas'),
-                mapOptions
+                map_options 
             );
 
             // CHANGE ZOOM IF NECESSARY AFTER BOUNDS HAVE CHANGED
@@ -50,6 +50,8 @@
                 }
                 ,2000
             );
+
+            draw_markers();
         }
 
         function draw_markers() {
@@ -76,6 +78,16 @@
                                 title: text
                             });
 
+                            google.maps.event.addListener(marker, "click", function () {
+                                $.getJSON("/twitter/" + tweet.user.screen_name ,function (data) {
+                                    window.location.replace(
+                                        document.location.origin + "/streamer_list"
+                                    )
+                                });
+
+                            });
+                                
+
                             map_bounds.extend(new google.maps.LatLng(point_1, point_2));
                         }
                     }
@@ -88,7 +100,7 @@
         }
 
         google.maps.event.addDomListener(window, 'load', initialize);
-        draw_markers()
+        // draw_markers()
 
     </script>
 
