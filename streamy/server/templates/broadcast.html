@@ -2,6 +2,25 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">
+		<style type="text/css">
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+
+            .container-narrow {
+                margin: 0 auto;
+                max-width: 700px;
+            }
+
+            div#badge {
+                width: 141px;
+                height: 141px;
+                position: fixed;
+                top: 0;
+                right: 0;
+            }
+        </style>
 	</head>
 	<body>
 	    <!-- Fixed navbar -->
@@ -12,7 +31,8 @@
 	      <div class="jumbotron">
 	        <div class="row">
 	        	<div class="col-sm-12 col-md-8">
-	        		<img src="imgs/stream_offline_med.png" class="vidthumb"></img>
+	        		<canvas id="mainCanvas" height="440" width="580"></canvas>
+                    <video style="display: none;" autoplay></video>
 	        	</div>
 	        	<div class="col-sm-12 col-md-4">
 	        		<div class="stream-description thumbnail">
@@ -26,5 +46,44 @@
 	    </div> <!-- /container -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.js"></script>
+		<script
+            src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+        </script>
+        <script
+            text="text/javascript"
+            src="http://aw204.host.cs.st-andrews.ac.uk/camgaze.js/js/compatibility.js">
+        </script>
+        <script
+            text="text/javascript"
+            src="http://aw204.host.cs.st-andrews.ac.uk/camgaze.js/js/camgaze.js">
+        </script>
+        <script text="text/javascript">
+            window.onload = init;
+            function init() {
+                var width = 100;
+                var height = 50;
+                var cGaze = new camgaze.Camgaze(width, height, "mainCanvas");
+                var webSocket = new WebSocket("ws://" + document.location.hostname + ":8889/streamer/{{ stream_id }}");
+                var canSend = true;
+                webSocket.onmessage = function (e) {
+                    canSend = true;
+                }
+
+                var frameOp = function (image_data, video) {
+                    var base64Image = document.getElementById(
+                        "mainCanvas"
+                    ).toDataURL();
+
+                    if (canSend) {
+                        console.log("here");
+                        webSocket.send(base64Image);
+                        canSend = false;
+                    }
+
+                    return image_data;
+                };
+                cGaze.setFrameOperator(frameOp);
+            }
+        </script>
 	</body>
 </html>
