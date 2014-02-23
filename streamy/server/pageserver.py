@@ -166,7 +166,6 @@ def tweets():
 
     if request.data is not None:
         search_term = json.loads(request.data)["search_term"]
-        print search_term
 
         # find relevant tweets
         if search_term != "":
@@ -189,6 +188,7 @@ def tweets():
             )
             for tweet in tweet_results:
                 tweet.pop("_id")
+                print tweet["text"]
 
         return jsonify({"tweets": tweet_results})
 

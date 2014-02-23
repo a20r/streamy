@@ -19,17 +19,19 @@
         var map;
         var map_options;
         var map_bounds = new google.maps.LatLngBounds();
+        var infowindow = new google.maps.InfoWindow({});
+        var global_markers = [];
 
         function initialize() {
-            var mapOptions = {
+            map_options = {
                 zoom: 3,
                 center: new google.maps.LatLng(60, 105),
-                mapTypeId: google.maps.MapTypeId.TERRAIN
+                mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
             map = new google.maps.Map(
                 document.getElementById('map-canvas'),
-                mapOptions
+                map_options
             );
 
             // CHANGE ZOOM IF NECESSARY AFTER BOUNDS HAVE CHANGED
@@ -72,6 +74,14 @@
                                 position: new google.maps.LatLng(point_1, point_2),
                                 map: map,
                                 title: text
+                            });
+
+                            marker['infowindow'] = "<html><body><div><p><h2>" + text + "</h2></p></div></body></html>";
+                            global_markers[i] = marker;
+
+                            google.maps.event.addListener(global_markers[i], 'click', function() {
+                                infowindow.setContent(this['infowindow']);
+                                infowindow.open(map, this);
                             });
 
                             map_bounds.extend(new google.maps.LatLng(point_1, point_2));
