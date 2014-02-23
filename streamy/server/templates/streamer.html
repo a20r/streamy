@@ -1,16 +1,16 @@
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="css/main.css">
+		<link rel="stylesheet" type="text/css" href="/css/main.css">
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">
 		<style type="text/css">
-            body {
-                padding-top: 60px;
-                padding-bottom: 40px;
-            }
-
             .container-narrow {
                 margin: 0 auto;
                 max-width: 700px;
+            }
+
+            video {
+                height: auto !important;
+                width: 100% !important;
             }
 
             div#badge {
@@ -23,27 +23,10 @@
         </style>
 	</head>
 	<body>
-	    <!-- Fixed navbar -->
-
-	    <div class="container my-container">
-
-	      <!-- Main component for a primary marketing message or call to action -->
-	      <div class="jumbotron">
-	        <div class="row">
-	        	<div class="col-sm-12 col-md-8">
-	        		<canvas id="mainCanvas" height="440" width="580"></canvas>
-                    <video style="display: none;" autoplay></video>
-	        	</div>
-	        	<div class="col-sm-12 col-md-4">
-	        		<div class="stream-description thumbnail">
-				  			<h3>Broadcasting...</h3>
-				        	<p class="darktext">My stream of Ukraine or Olympic games event or something...</p>
-				    </div>
-	        	</div>
-			</div>
-	      </div>
-
-	    </div> <!-- /container -->
+        <canvas id="mainCanvas" height="100" width="50" style:"display: none;">
+            Your browser does not support Canvas (stupid you)
+        </canvas>
+        <video id="video" style="display: block;"  autoplay controls></video>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.js"></script>
 		<script
@@ -69,13 +52,14 @@
                     canSend = true;
                 }
 
+                $("#mainCanvas").css("display", "none");
+
                 var frameOp = function (image_data, video) {
                     var base64Image = document.getElementById(
                         "mainCanvas"
                     ).toDataURL();
 
                     if (canSend) {
-                        console.log("here");
                         webSocket.send(base64Image);
                         canSend = false;
                     }

@@ -40,3 +40,11 @@ def serve_script(filetype, filename):
     with open(STATIC_DIR + filetype + "/" + filename) as f:
         return Response(f.read(), mimetype = MIME_DICT[filetype])
 
+
+@config.app.route("/twitter/<username>")
+def twitter_username(username):
+    tr = TweetReply()
+    tr.tweet_to_person(username)
+
+    return jsonify(error="No error")
+

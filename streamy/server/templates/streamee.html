@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="css/main.css">
+		<link rel="stylesheet" type="text/css" href="/css/main.css">
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">
 		<link
         href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
@@ -34,12 +34,12 @@
 	      <div class="jumbotron">
 	        <div class="row">
 			  <div class="col-sm-6 col-md-6">
-			  	<a href="landing.html"><img class="bannerimage" src="imgs/banner_trans.png"></img></a>
+			  	<a href="landing.html"><img class="bannerimage" src="/imgs/banner_trans.png"></img></a>
 			  </div>
 			  <div class="col-sm-6 col-md-3 col-md-offset-3">
 			  	<div>
-			  		<a href="allstreams.html" class="btn btn-lg btn-default my-header-button"><span class="glyphicon glyphicon-play-circle"></span> All Streams</a></br></br>
-			  		<a href="broadcast.html" class="btn btn-lg btn-default my-header-button"><span class="glyphicon glyphicon-arrow-up"></span> Broadcast</a>
+			  		<a href="/landing.html" class="btn btn-lg btn-default my-header-button"><span class="glyphicon glyphicon-play-circle"></span> All Streams</a></br></br>
+			  		<a href="/broadcast.html" class="btn btn-lg btn-default my-header-button"><span class="glyphicon glyphicon-arrow-up"></span> Broadcast</a>
 			  	</div>
 			  </div>
 			</div>
@@ -51,14 +51,6 @@
 			     	<img id="stream"></img>
 			    </div>
 			  </div>
-			  <div class="col-sm-12 col-md-6">
-			  		<div class="thumbnail">
-			  			<div class="stream-description">
-				  			<h3>Stream Channel Title</h3>
-				        	<p class="darktext">Text describing the stream, probably originating from Sochi or Ukraine.</p>
-				        </div>
-			      	</div>
-			  </div>
 			</div>
 
 	    </div> <!-- /container -->
@@ -67,11 +59,11 @@
 		<script text="text/javascript">
             window.onload = function () {
                 var webSocket = new WebSocket("ws://" + document.location.hostname + ":8888/streamee/{{ stream_id }}");
-                console.log("HERE");
                 webSocket.onmessage = function (e) {
                     image = document.getElementById("stream");
-                    console.log(e);
                     image.setAttribute("src", e.data);
+                    image.setAttribute("height", 480);
+                    image.setAttribute("width", 640);
                 }
             }
         </script>
