@@ -2,6 +2,9 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">
+        <style>
+            /* a:link {color:#FF0000;} */
+        </style>
 	</head>
 	<body>
 	    <!-- Fixed navbar -->
@@ -25,17 +28,13 @@
 			</div>
 	      </div>
 
-			<div class="jumbotron">
-	        <div class="row">
-			  <div class="col-sm-12 col-md-8">
-			  	<H3 style="color: white">What is Streamy?</h3>
-			  	<p align="justify"><b>Streamy</b> is a crowd-sourced journalism platform. With streamy, you can view live broadcasts of popular current events provided by nearby users. Becoming a streamy broadcaster is easy, it takes seconds! Just click "Broadcast" and begin broadcasting straight away, on any device. When you make a tweet near a place covered by major news networks, streamy will tweet you a link to begin streaming unbiased content to other users. <a href="allstreams.html"><b style="color:white">Discover more!</b></a></p>
-			  </div>
-			  <div class="col-sm-12 col-md-4">
-			  	<img src="imgs/aboutimage.png" class="aboutimage"></img>
-			  </div>
-			</div>
-	      </div>
+			<!-- <div class="jumbotron"> -->
+                <table class="table">
+                    {% for streamer in streamer_list %}
+                    <tr><td><a href="/streamee/{{ streamer }}"><b>{{ streamer }}</b></a></td></tr>
+                    {% endfor %}
+                </table>
+            <!-- </div> -->
 
 	    </div> <!-- /container -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
@@ -46,8 +45,6 @@
                 function(val) { 
                     return val.trim();
                 });
-
-                console.log(listOfUsernames);
 
                 var totalRequested = 0;
 

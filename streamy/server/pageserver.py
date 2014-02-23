@@ -4,9 +4,11 @@ from flask import request, redirect, url_for, abort, jsonify, render_template
 from flask import make_response, Response
 import config
 
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), "../"))
 
-from streaming.tweetbot import TweetReply
+from tweetbot.streaming import TweetReply
 
 """ Directory for static files """
 STATIC_DIR = "assets/"
@@ -19,6 +21,8 @@ MIME_DICT = {
     "libraries": "text/javascript",
     "data": "text/csv"
 }
+
+streamer_list = list()
 
 @config.app.route("/<filename>", methods = ["GET"])
 def serve_html_page(filename):
@@ -47,8 +51,21 @@ def serve_script(filetype, filename):
 
 @config.app.route("/twitter/<username>")
 def twitter_username(username):
-    tr = TweetReply()
-    tr.tweet_to_person(username)
+    global streamer_list
+    if not username in streamer_list:
+        tr = TweetReply()
+        tr.tweet_to_person(username)
+        streamer_list.append(username)
 
     return jsonify(error="No error")
+
+
+@config.app.route("/streamer_list")
+def get_streamer_list():
+    return render_template("streamerlist.html", streamer_list=streamer_list)
+
+
+@config.app.route("/")
+def get_index():
+    return render_template("landing.html")
 
