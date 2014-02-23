@@ -1,4 +1,6 @@
 flask
 autobahn
 pymongo
-nltk
+tweepy
+geopy
+pattern

@@ -5,7 +5,8 @@ from tweepy import Stream
 import json
 from streamy.db import DB
 from streamy.tweetbot.streaming import TwitterStream
-from geopy import geocoders  
+from streamy.tweetbot.streaming import TweetReply
+from geopy import geocoders
 
 # Go to http://dev.twitter.com and create an app.
 # The consumer key and secret will be generated for you after
@@ -30,5 +31,15 @@ if __name__ == '__main__':
     #tweets = collections["tweets"]
     #tweet.add()
     #[-0.0299759,51.5019442,-0.0122416,51.5087498]
-    print get_boundary("Times Square")
-    s = TwitterStream(locations=get_boundary("Times Square"), db=db)
+    query = "Maidan, Kiev"
+    print get_boundary(query)
+    s = TwitterStream(locations=get_boundary(query), db=db)
+
+    reply = TweetReply()
+
+    for tweet in s.queue:
+        screen_name = tweet["user"]["screen_name"]
+        tweet_id = tweet["id_str"]
+        url = ""
+
+        reply.tweet_with_request(screen_name, tweet_id, url)
