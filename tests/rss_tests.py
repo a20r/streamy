@@ -36,8 +36,8 @@ class UnitTests(unittest.TestCase):
         self.assertEquals(count, rss.count())
 
         # test remove all documents
-        rss.remove()
-        self.assertTrue(rss.count() == 0)
+        # rss.remove()
+        # self.assertTrue(rss.count() == 0)
 
 
 if __name__ == "__main__":
