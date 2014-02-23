@@ -187,6 +187,7 @@ def tweets():
                 ).sort("created_at", -1)
             )
             for tweet in tweet_results:
+                tweet["spammer"] = "wallarelvo"
                 tweet.pop("_id")
                 print tweet["text"]
 

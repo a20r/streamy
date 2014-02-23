@@ -31,7 +31,7 @@
 
             map = new google.maps.Map(
                 document.getElementById('map-canvas'),
-                map_options 
+                map_options
             );
 
             // CHANGE ZOOM IF NECESSARY AFTER BOUNDS HAVE CHANGED
@@ -59,7 +59,7 @@
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: "/tweets", 
+                url: "/tweets",
                 data: '{ "search_term": "{{ search_term }}" }',
                 success: function(data) {
                     for (var i in data.tweets) {
@@ -86,7 +86,7 @@
                                 });
 
                             });
-                                
+
 
                             map_bounds.extend(new google.maps.LatLng(point_1, point_2));
                         }
@@ -146,11 +146,11 @@
           </div>
 
             <div >
-                
+
                 <div class="col-sm-12 col-md-5">
                 <form id="search_menu" action="/map" method="post">
                     <div class="input-group">
-                    
+
                         <input type="text" class="search-query form-control" placeholder="Search" name="search_term" id="search_term" value="Sochi">
                         <span class="input-group-btn">
                         <button type="submit" type="button"  class="btn btn-default">Search</button>
@@ -172,24 +172,24 @@
                 <div id="map-canvas"></div>
                 <ul id="rss_feeds" class="list-group">
                     {% for feed in rss %}
-                    
-                    {% if feed.sentiment > 0 %}
-                        <li class="list-group-item ist-group-item-success">
-                    {% elif feed.sentiment < 0 %}
-                        <li class="list-group-item ist-group-item-danger">
+
+                    {% if feed.sentiment.polarity > 0 %}
+                        <li class="list-group-item list-group-item-success">
+                    {% elif feed.sentiment.polarity < 0 %}
+                        <li class="list-group-item list-group-item-danger">
                     {% else %}
                         <li class="list-group-item">
                     {% endif %}
 
                         <a href="{{ feed.source_link }}">
-                            [{{ feed.source }}] – {{ feed.title }}           
+                            [{{ feed.source }}] – {{ feed.title }}
                         </a>
                     </li>
                     {% endfor %}
 
                 </ul>
               </div>
-              
+
             </div>
           </div>
 

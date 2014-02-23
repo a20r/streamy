@@ -68,6 +68,6 @@ class RSSReader(object):
         for target in self.targets:
             for entry in self.parse_feed(target):
                 if not self.collections["rss"].find_one(entry):
-                    sentiment = self.sentiment.analyze_text(entry["summary"])
+                    sentiment = self.sentiment.analyze_text(entry["title"])
                     entry["sentiment"] = sentiment
                     self.collections["rss"].insert(entry)

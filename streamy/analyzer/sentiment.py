@@ -10,15 +10,6 @@ class SentimentAnalyzer(object):
         self.db = db
 
     def analyze_text(self, text):
-        # USING NLTK WEB
-        # sentiment_url = "http://text-processing.com/api/sentiment/"
-        # data = {"text": text}
-
-        # # analyze text
-        # result = requests.post(sentiment_url, data=data)
-        # result = json.loads(result.text)
-
-        # USING PATTERN
         analysis = sentiment(text)
         result = {
             "polarity": analysis[0],
