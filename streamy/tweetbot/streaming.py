@@ -72,6 +72,7 @@ class TwitterStream(StreamListener):
     def insert_tweet(self, tweet):
         self.tweets.insert(tweet)
 
+
 class TweetReply():
     def __init__(self):
         auth = OAuthHandler(consumer_key, consumer_secret)
@@ -81,3 +82,13 @@ class TweetReply():
     def tweet_with_request(self, screen_name, tweet_id, url):
         # self.api.update_status("@" + screen_name + " Hi! Could you please click the link to stream your surroundings? " + url, tweet_id)
         self.api.update_status("@" + screen_name + " We support you!", tweet_id)
+
+
+class TwitterTrends(object):
+    def __init__(self):
+        auth = OAuthHandler(consumer_key, consumer_secret)
+        auth.set_access_token(access_token, access_token_secret)
+        self.api = API(auth)
+
+    def get_trends(self):
+        return self.api.trends_available()

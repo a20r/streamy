@@ -6,6 +6,7 @@ import json
 from streamy.db import DB
 from streamy.tweetbot.streaming import TwitterStream
 from streamy.tweetbot.streaming import TweetReply
+from streamy.tweetbot.streaming import TwitterTrends
 from geopy import geocoders
 
 # Go to http://dev.twitter.com and create an app.
@@ -31,15 +32,19 @@ if __name__ == '__main__':
     #tweets = collections["tweets"]
     #tweet.add()
     #[-0.0299759,51.5019442,-0.0122416,51.5087498]
-    query = "Maidan, Kiev"
-    print get_boundary(query)
-    s = TwitterStream(locations=get_boundary(query), db=db)
+    # query = "Maidan, Kiev"
+    # print get_boundary(query)
+    # s = TwitterStream(locations=get_boundary(query), db=db)
 
-    reply = TweetReply()
+    # reply = TweetReply()
 
-    for tweet in s.queue:
-        screen_name = tweet["user"]["screen_name"]
-        tweet_id = tweet["id_str"]
-        url = ""
+    # for tweet in s.queue:
+    #     screen_name = tweet["user"]["screen_name"]
+    #     tweet_id = tweet["id_str"]
+    #     url = ""
 
-        reply.tweet_with_request(screen_name, tweet_id, url)
+    #     reply.tweet_with_request(screen_name, tweet_id, url)
+
+    # trends = TwitterTrends()
+    # import pprint
+    # pprint.pprint(trends.get_trends())
