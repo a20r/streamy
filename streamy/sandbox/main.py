@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import re
+import json
 
 from flask import Flask
 from flask import g
@@ -48,15 +49,19 @@ def modify_source_names(feeds):
     return feeds
 
 
+def jsonify_tweets(tweets):
+    result = []
+    for tweet in tweets:
+        tweet.pop("_id")
+        result.append(json.dumps(tweet))
+    return result
+
+
 @app.route('/', methods=["GET"])
 def index():
-    geo_points = [
-        (56.341304, -2.791441),  # Gannochy Hall
-        (55.953252, -3.188267)  # Edinburgh
-    ]
     return render_template(
         'index.html',
-        geo_points=geo_points,
+        tweets=list(),
         rss=list()
     )
 
@@ -66,12 +71,15 @@ def query():
     db = get_db()
     collections = db.return_collections()
     rss = collections["rss"]
+    tweets = collections["tweets"]
 
+    # get search term
     search_term = None
     if request.form["search_term"] is not None:
         search_term = request.form["search_term"]
 
-    results = list(
+    # find relevant rss feeds
+    rss_results = list(
         rss.find(
             {
                 "$or": [
@@ -79,14 +87,34 @@ def query():
                     {"summary": re.compile(search_term, re.IGNORECASE)},
                 ]
             }
-        ).sort("date")
+        ).sort("date", -1)
     )
-    results = modify_source_names(results)
+    rss_results = modify_source_names(rss_results)
+
+    # find relevant tweets
+    tweet_results = list(
+        tweets.find(
+            {
+                "$or": [
+                    {"text": re.compile(search_term, re.IGNORECASE)},
+                    {"summary": re.compile(search_term, re.IGNORECASE)},
+                    {
+                        "entities": {
+                            "$elemMatch": {
+                                "text": re.compile(search_term, re.IGNORECASE)
+                            }
+                        }
+                    }
+                ]
+            }
+        ).sort("created_at", -1)
+    )
+    tweet_results = jsonify_tweets(tweet_results)
 
     return render_template(
         'index.html',
-        geo_points=[],
-        rss=results
+        tweets=tweet_results,
+        rss=rss_results
     )
 
 
