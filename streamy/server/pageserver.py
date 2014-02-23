@@ -4,6 +4,8 @@ from flask import request, redirect, url_for, abort, jsonify, render_template
 from flask import make_response, Response
 import config
 
+from streaming import TweetReply
+
 """ Directory for static files """
 STATIC_DIR = "assets/"
 
