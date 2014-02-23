@@ -85,7 +85,7 @@ class TweetReply():
 
     def tweet_to_person(self, screen_name):
         # self.api.update_status("@" + screen_name + " Hi! Could you please click the link to stream your surroundings? " + url, tweet_id)
-        self.api.update_status("@" + screen_name + " Somebody requested a live stream from you: http://streamy.co/streamee/" + screen_name)
+        self.api.update_status("@" + screen_name + " Somebody requested a live stream from you: http://streamy.co/streamer/" + screen_name)
 
 
 class TwitterTrends(object):
