@@ -1,10 +1,10 @@
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Camgaze.js</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
-        <meta name="author" content="">
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">
+		<link
+        href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+        rel="stylesheet">
         <style type="text/css">
             body {
                 padding-top: 60px;
@@ -24,27 +24,47 @@
                 right: 0;
             }
         </style>
-        <!-- Le Bootstrap styles -->
-        <link
-        href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
-        rel="stylesheet">
+	</head>
+	<body>
+	    <!-- Fixed navbar -->
 
-    </head>
-    <body>
-        <div id="s_id" style="display: none;">{ stream_id }</div>
-        <div class="container-narrow">
-            <div class="hero-unit">
-                <h2 style="padding-bottom:10;">Face Detection Demo</h2>
-                    <!-- <canvas id="mainCanvas" height="440" width="580"></canvas> -->
-                    <img id="stream"></img>
-            </div>
+	    <div class="container my-container">
 
-        </div>
-        <!-- JQuery and Bootstrap Javascript files -->
-        <script
-            src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
-        </script>
-        <script text="text/javascript">
+	      <!-- Main component for a primary marketing message or call to action -->
+	      <div class="jumbotron">
+	        <div class="row">
+			  <div class="col-sm-6 col-md-6">
+			  	<a href="landing.html"><img class="bannerimage" src="imgs/banner_trans.png"></img></a>
+			  </div>
+			  <div class="col-sm-6 col-md-3 col-md-offset-3">
+			  	<div>
+			  		<a href="allstreams.html" class="btn btn-lg btn-default my-header-button"><span class="glyphicon glyphicon-play-circle"></span> All Streams</a></br></br>
+			  		<a href="broadcast.html" class="btn btn-lg btn-default my-header-button"><span class="glyphicon glyphicon-arrow-up"></span> Broadcast</a>
+			  	</div>
+			  </div>
+			</div>
+	      </div>
+
+	      <div class="row">
+			  <div class="col-sm-12 col-md-6">
+			    <div class="thumbnail">
+			     	<img id="stream"></img>
+			    </div>
+			  </div>
+			  <div class="col-sm-12 col-md-6">
+			  		<div class="thumbnail">
+			  			<div class="stream-description">
+				  			<h3>Stream Channel Title</h3>
+				        	<p class="darktext">Text describing the stream, probably originating from Sochi or Ukraine.</p>
+				        </div>
+			      	</div>
+			  </div>
+			</div>
+
+	    </div> <!-- /container -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.js"></script>
+		<script text="text/javascript">
             window.onload = function () {
                 var webSocket = new WebSocket("ws://" + document.location.hostname + ":8888/streamee/{{ stream_id }}");
                 console.log("HERE");
@@ -55,5 +75,5 @@
                 }
             }
         </script>
-    </body>
+	</body>
 </html>
