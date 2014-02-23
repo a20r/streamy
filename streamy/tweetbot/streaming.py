@@ -79,9 +79,13 @@ class TweetReply():
         auth.set_access_token(access_token, access_token_secret)
         self.api = API(auth)
 
-    def tweet_with_request(self, screen_name, tweet_id, url):
+    def tweet_in_response(self, screen_name, tweet_id, url):
         # self.api.update_status("@" + screen_name + " Hi! Could you please click the link to stream your surroundings? " + url, tweet_id)
         self.api.update_status("@" + screen_name + " We support you!", tweet_id)
+
+    def tweet_to_person(self, screen_name):
+        # self.api.update_status("@" + screen_name + " Hi! Could you please click the link to stream your surroundings? " + url, tweet_id)
+        self.api.update_status("@" + screen_name + " Somebody requested a live stream from you: http://streamy.co/streamee/test/" + screen_name)
 
 
 class TwitterTrends(object):
