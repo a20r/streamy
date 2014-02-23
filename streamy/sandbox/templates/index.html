@@ -16,7 +16,7 @@
     <script type="text/javascript">
         function initialize() {
             var map_bounds = new google.maps.LatLngBounds();
-            var map_options = { zoom: 8 };
+            var map_options = { zoom: 1 };
             var map = new google.maps.Map(
                 document.getElementById("map-canvas"),
                 map_options
@@ -38,7 +38,7 @@
                 map_bounds.extend(new google.maps.LatLng(points[i][0], points[i][1]));
             }
             map.fitBounds(map_bounds);
-            
+
             // CHANGE ZOOM IF NECESSARY AFTER BOUNDS HAVE CHANGED
             zoomChangeBoundsListener = google.maps.event.addListenerOnce(
                 map,
@@ -49,8 +49,10 @@
                     }
                 }
             );
-            setTimeout(function(){
-                google.maps.event.removeListener(zoomChangeBoundsListener)},
+            setTimeout(
+                function(){
+                    google.maps.event.removeListener(zoomChangeBoundsListener)
+                }
                 ,2000
             );
         }
@@ -60,16 +62,58 @@
 
     <style>
         #map-canvas {
+            clear: both;
             width: 500px;
             height: 500px;
+            margin-top: 20px;
+        }
+
+        body {
+            width: 600px;
             margin-left: auto;
             margin-right: auto;
-            margin-top: 20px;
+        }
+
+        ul#search_menu {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul#search_menu li {
+            padding: 0;
+            margin: 0;
         }
 
     </style>
 </head>
 <body>
-    <div id="map-canvas"/>
+
+    <form id="search_menu" action="/" method="post">
+        <li><h3>search:</h3></li>
+        <li><input type="text" name="search_term" id="search_term" value="Sochi"></li>
+        <li><input type="submit"></li>
+    </form>
+
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+        });
+    </script>
+
+
+    <div id="map-canvas"></div>
+    <ul id="rss_feeds">
+        {% for feed in rss %}
+        <li>
+            <a href="{{ feed.source_link }}">
+                [{{ feed.source }}] - {{ feed.title }}           
+            </a>
+        </li>
+        {% endfor %}
+
+    </ul>
+
+
 </body>
 </html>
